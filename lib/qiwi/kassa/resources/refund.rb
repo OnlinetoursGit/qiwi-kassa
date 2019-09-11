@@ -2,13 +2,15 @@
 
 module Qiwi
   module Kassa
+    # Qiwi::Kassa::Refund
     class Refund < Resource
-      def create(bill_id, refund_id, params = {})
-        @client.put("bills/#{bill_id}/refunds/#{refund_id}", JSON.fast_generate(params))
+      def create(bill_id:, refund_id:, params: {})
+        @client.put(endpoint: "bills/#{bill_id}/refunds/#{refund_id}",
+                    payload: JSON.fast_generate(params))
       end
 
-      def status(bill_id, refund_id)
-        @client.get("bills/#{bill_id}/refunds/#{refund_id}")
+      def status(bill_id:, refund_id:)
+        @client.get(endpoint: "bills/#{bill_id}/refunds/#{refund_id}")
       end
     end
   end

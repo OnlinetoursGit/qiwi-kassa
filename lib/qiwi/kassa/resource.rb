@@ -2,6 +2,7 @@
 
 module Qiwi
   module Kassa
+    # Qiwi::Kassa::Resource
     class Resource
       def initialize(client:)
         @client = client
