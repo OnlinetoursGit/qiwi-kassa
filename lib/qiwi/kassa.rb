@@ -43,7 +43,7 @@ module Qiwi
       # @return [String]
       def self.build(params: {})
         url   = 'https://oplata.qiwi.com/create'
-        query = "#{RestClient::Utils.encode_query_string(params)}"
+        query = RestClient::Utils.encode_query_string(params)
 
         "#{url}?#{query}"
       end
