@@ -21,10 +21,10 @@ module Qiwi
       attr_reader :resources
 
       def initialize(secret_key:)
-        client = ApiClient.new(secret_key: secret_key)
+        client = Qiwi::Kassa::ApiClient.new(secret_key: secret_key)
         @resources = OpenStruct.new(
-          bills: Bill.new(client: client),
-          refunds: Refund.new(client: client)
+          bills: Qiwi::Kassa::Bill.new(client: client),
+          refunds: Qiwi::Kassa::Refund.new(client: client)
         )
       end
     end

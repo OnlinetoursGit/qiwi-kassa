@@ -3,7 +3,7 @@
 module Qiwi
   module Kassa
     # Qiwi::Kassa::ApiClient
-    class Client
+    class ApiClient
       def initialize(secret_key:)
         @default_headers = {
           'Content-Type': 'application/json;charset=UTF-8',

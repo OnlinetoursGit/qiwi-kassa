@@ -1,0 +1,9 @@
+{
+  "amount": {
+    "value": 50.50,
+    "currency": "RUB"
+  },
+  "datetime": "2018-03-01T16:06:57+03",
+  "refundId": "899343443",
+  "status": "PARTIAL"
+}

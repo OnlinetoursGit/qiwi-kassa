@@ -1,0 +1,16 @@
+{
+  "siteId": "23044",
+  "billId": "893794793973",
+  "amount": {
+    "value": 100,
+    "currency": "RUB"
+  },
+  "status": {
+    "value": "WAITING",
+    "changedDateTime": "2018-03-05T11:27:41+03:00"
+  },
+  "comment": "Text comment",
+  "creationDateTime": "2018-03-05T11:27:41",
+  "expirationDateTime": "2018-04-13T14:30:00+03:00",
+  "payUrl": "https://oplata.qiwi.com/form/?invoice_uid=d875277b-6f0f-445d-8a83-f62c7c07be77"
+}

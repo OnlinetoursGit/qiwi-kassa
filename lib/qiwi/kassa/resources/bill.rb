@@ -14,7 +14,7 @@ module Qiwi
       end
 
       def reject(id:)
-        @client.post(endpoint: "bills/#{id}")
+        @client.post(endpoint: "bills/#{id}/reject")
       end
     end
   end
