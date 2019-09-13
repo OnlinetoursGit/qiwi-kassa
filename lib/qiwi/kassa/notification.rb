@@ -9,11 +9,11 @@ module Qiwi
 
       def self.check_signature(signature:, body:, secret_key:)
         data = [
-          body['bill']['amount']['currency'],
-          body['bill']['amount']['value'],
-          body['bill']['billId'],
-          body['bill']['siteId'],
-          body['bill']['status']['value']
+          body['amount']['currency'],
+          body['amount']['value'],
+          body['billId'],
+          body['siteId'],
+          body['status']['value']
         ].map(&:to_s).join(VALUE_SEPARATOR)
 
         digest = OpenSSL::Digest.new(DEFAULT_ALGORITHM)
