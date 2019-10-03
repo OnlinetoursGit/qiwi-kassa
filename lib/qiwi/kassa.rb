@@ -4,11 +4,13 @@ require 'ostruct'
 require 'rest_client'
 require 'json'
 require 'qiwi/kassa/api_client'
+require 'qiwi/kassa/utils'
 require 'qiwi/kassa/notification'
 require 'qiwi/kassa/resource'
 require 'qiwi/kassa/version'
 
 Gem.find_files('qiwi/kassa/resources/*.rb').each { |path| require path }
+Gem.find_files('qiwi/kassa/notifications/*.rb').each { |path| require path }
 
 module Qiwi
   module Kassa
