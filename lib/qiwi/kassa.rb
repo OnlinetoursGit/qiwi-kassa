@@ -10,7 +10,6 @@ require 'qiwi/kassa/resource'
 require 'qiwi/kassa/version'
 
 Gem.find_files('qiwi/kassa/resources/*.rb').each { |path| require path }
-Gem.find_files('qiwi/kassa/notifications/*.rb').each { |path| require path }
 
 module Qiwi
   module Kassa
