@@ -7,23 +7,33 @@ module Qiwi
       VALUE_SEPARATOR = '|'
       DEFAULT_ALGORITHM = 'sha256'
 
-      def initialize(signature:, data:, secret_key:)
-        @data         = serialized_data(data)
-        @signature    = signature
-        @secret_key   = secret_key
+      def initialize(data:)
+        @data = serialized_data(data)
         define_instances
       end
 
       def success?
-        valid? && !declined?
+        status['value'] != 'DECLINE'
       end
 
-      def declined?
-        status['value'] == 'DECLINE'
+      def valid?(secret_key:, signature:)
+        signature == hmac(secret_key)
       end
 
-      def valid?
-        signature == hmac
+      def bill?
+        type.nil?
+      end
+
+      def to_h
+        Hash[instance_variables.map { |name| [name.to_s.delete("@"), instance_variable_get(name)] } ]
+      end
+
+      def error
+        {
+          reason_code: status['reason_code'],
+          reason_message: status['reason_message'],
+          error_code: status['error_code']
+        }
       end
 
       attr_reader(
@@ -33,10 +43,10 @@ module Qiwi
 
       private
 
-      attr_reader :signature, :data, :secret_key
+      attr_reader :data
       attr_reader :payment_id, :capture_id, :refund_id
 
-      def hmac
+      def hmac(secret_key)
         digest = OpenSSL::Digest.new(DEFAULT_ALGORITHM)
         OpenSSL::HMAC.hexdigest(digest, secret_key, invoice_params)
       end
@@ -54,7 +64,7 @@ module Qiwi
       end
 
       def define_instances
-        type = data['type'].downcase
+        type = data['type']&.downcase || 'bill'
 
         data[type].each do |k, v|
           instance_variable_set("@#{k}", v)
