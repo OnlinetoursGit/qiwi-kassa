@@ -8,8 +8,7 @@ module Qiwi
       DEFAULT_ALGORITHM = 'sha256'
 
       def initialize(data:)
-        @data = serialized_data(data)
-        define_instances
+        define_instances serialized_data(data)
       end
 
       def success?
@@ -21,7 +20,7 @@ module Qiwi
       end
 
       def bill?
-        type.nil?
+        !(payment_id || capture_id || refund_id)
       end
 
       def to_h
@@ -36,14 +35,8 @@ module Qiwi
         }
       end
 
-      attr_reader(
-        :type, :created_date_time, :status, :amount,
-        :payment_method, :customer, :gateway_data, :bill_id, :flags
-      )
-
       private
 
-      attr_reader :data
       attr_reader :payment_id, :capture_id, :refund_id
 
       def hmac(secret_key)
@@ -52,6 +45,8 @@ module Qiwi
       end
 
       def invoice_params
+        return bill_invoice_params if bill?
+
         [
           payment_id || capture_id || refund_id,
           created_date_time,
@@ -59,15 +54,28 @@ module Qiwi
         ].map(&:to_s).join(VALUE_SEPARATOR)
       end
 
-      def serialized_data(data)
-        Utils.deep_transform_keys(data) { |k| Utils.snake_case(k) }
+      # todo: use factory pattern
+      def bill_invoice_params
+        [
+          amount['currency'],
+          amount['value'],
+          bill_id,
+          site_id,
+          status['value']
+
+        ].map(&:to_s).join(VALUE_SEPARATOR)
       end
 
-      def define_instances
+      def serialized_data(data)
+        Utils.deep_transform_keys(data) { |k| Utils.snake_case(k.to_s) }
+      end
+
+      def define_instances(data)
         type = data['type']&.downcase || 'bill'
 
         data[type].each do |k, v|
           instance_variable_set("@#{k}", v)
+          self.class.send(:attr_reader, k)
         end
       end
     end
