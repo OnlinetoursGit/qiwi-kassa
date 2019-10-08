@@ -50,7 +50,7 @@ module Qiwi
         [
           payment_id || capture_id || refund_id,
           created_date_time,
-          amount['value']
+          format('%.2f', amount['value'])
         ].map(&:to_s).join(VALUE_SEPARATOR)
       end
 
