@@ -23,6 +23,10 @@ module Qiwi
         !(payment_id || capture_id || refund_id)
       end
 
+      def operation_id
+        bill_id
+      end
+
       def to_h
         Hash[instance_variables.map { |name| [name.to_s.delete("@"), instance_variable_get(name)] } ]
       end
