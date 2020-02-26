@@ -25,7 +25,8 @@ module Qiwi
         client = Qiwi::Kassa::ApiClient.new(secret_key: secret_key)
         @resources = OpenStruct.new(
           bills: Qiwi::Kassa::Bill.new(client: client),
-          refunds: Qiwi::Kassa::Refund.new(client: client)
+          refunds: Qiwi::Kassa::Refund.new(client: client),
+          captures: Qiwi::Kassa::Capture.new(client: client)
         )
       end
     end
