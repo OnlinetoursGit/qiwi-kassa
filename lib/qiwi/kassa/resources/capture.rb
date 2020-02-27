@@ -6,7 +6,7 @@ module Qiwi
     class Capture < Resource
       def create(site_id:, payment_id:, capture_id:)
         @client.put(endpoint: "partner/payin/v1/sites/#{site_id}/payments/#{payment_id}/captures/#{capture_id}",
-                    paylod: '{}')
+                    payload: '{}')
       end
 
       def status(site_id:, payment_id:, capture_id:)
