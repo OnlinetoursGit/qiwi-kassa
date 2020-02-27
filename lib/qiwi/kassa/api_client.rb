@@ -14,22 +14,19 @@ module Qiwi
 
       def get(url: API_URL, endpoint:, custom_headers: {})
         make_request do
-          RestClient.get("#{url}#{endpoint}", @default_headers
-            .merge(custom_headers))
+          Faraday.get("#{url}#{endpoint}", {}, @default_headers.merge(custom_headers))
         end
       end
 
       def post(url: API_URL, endpoint:, payload: nil, custom_headers: {})
         make_request do
-          RestClient.post("#{url}#{endpoint}", payload,
-                          @default_headers.merge(custom_headers))
+          Faraday.post("#{url}#{endpoint}", payload, @default_headers.merge(custom_headers))
         end
       end
 
       def put(url: API_URL, endpoint:, payload: nil, custom_headers: {})
         make_request do
-          RestClient.put("#{url}#{endpoint}", payload,
-                         @default_headers.merge(custom_headers))
+          Faraday.put("#{url}#{endpoint}", payload, @default_headers.merge(custom_headers))
         end
       end
 

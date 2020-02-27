@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'ostruct'
-require 'rest_client'
+require 'faraday'
 require 'json'
 require 'qiwi/kassa/api_client'
 require 'qiwi/kassa/utils'
@@ -45,7 +45,7 @@ module Qiwi
       # @return [String]
       def self.build(params: {})
         url   = 'https://oplata.qiwi.com/create'
-        query = RestClient::Utils.encode_query_string(params)
+        query = Faraday::Utils.build_query(params)
 
         "#{url}?#{query}"
       end
