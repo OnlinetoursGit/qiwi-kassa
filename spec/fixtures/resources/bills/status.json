@@ -1,16 +1,61 @@
 {
-  "siteId": "23044",
   "billId": "893794793973",
+  "invoiceUid": "c2286a4f-4ff2-4836-971e-b6afce51a049",
   "amount": {
-    "value": 100,
-    "currency": "RUB"
+    "currency": "RUB",
+    "value": "3.00"
   },
+  "expirationDateTime": "2023-03-29T14:12:45+03:00",
   "status": {
-    "value": "WAITING",
-    "changedDateTime": "2018-03-05T11:27:41+03:00"
+    "value": "PAID",
+    "changedDateTime": "2023-03-22T18:38:24+03:00"
   },
   "comment": "Text comment",
-  "creationDateTime": "2018-03-05T11:27:41",
-  "expirationDateTime": "2018-04-13T14:30:00+03:00",
-  "payUrl": "https://oplata.qiwi.com/form/?invoice_uid=d875277b-6f0f-445d-8a83-f62c7c07be77"
+  "flags": [
+    "TEST"
+  ],
+  "payUrl": "https://oplata.qiwi.com/form?invoiceUid=c2286a4f-4ff2-4836-971e-b6afce51a049",
+  "payments": [
+    {
+      "paymentId": "bb918d93-a3f6-4c89-b753-c9e2311f1318",
+      "billId": "893794793973",
+      "createdDateTime": "2023-03-22T18:38:24+03:00",
+      "amount": {
+        "currency": "RUB",
+        "value": "3.00"
+      },
+      "capturedAmount": {
+        "currency": "RUB",
+        "value": "0.00"
+      },
+      "refundedAmount": {
+        "currency": "RUB",
+        "value": "0.00"
+      },
+      "paymentMethod": {
+        "type": "CARD",
+        "maskedPan": "453265******8362",
+        "rrn": "123",
+        "authCode": "181218"
+      },
+      "status": {
+        "value": "COMPLETED",
+        "changedDateTime": "2023-03-22T18:38:24+03:00"
+      },
+      "comment": "Text comment",
+      "customFields": {
+        "invoice_creation_type": "PAYIN_API"
+      },
+      "flags": [
+        "TEST"
+      ],
+      "paymentCardInfo": {
+        "issuingCountry": "840",
+        "issuingBank": "MASTERCARD - MDS FOR EUROPE DE",
+        "paymentSystem": "MASTERCARD",
+        "fundingSource": "UNKNOWN",
+        "paymentSystemProduct": "Unknown"
+      }
+    }
+  ]
 }

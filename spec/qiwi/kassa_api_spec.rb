@@ -1,14 +1,15 @@
 RSpec.describe Qiwi::Kassa::Api do
+  let!(:site_id) { 'site-id' }
   let!(:bill_id) { '893794793973' }
   let!(:refund_id) { '899343443' }
   let!(:bill_params) {
     {
       amount: {
         currency: 'RUB',
-        value: 100.00
+        value: '3.00'
       },
       comment: 'Text comment',
-      expirationDateTime: '2018-04-13T14:30:00+03:00',
+      expirationDateTime: '2023-03-29T14:12:45+03:00',
       customer: {},
       customFields: {}
     }
@@ -18,7 +19,7 @@ RSpec.describe Qiwi::Kassa::Api do
     {
       amount: {
         currency: 'RUB',
-        value: 50.50
+        value: '1.50'
       }
     }
   }
@@ -28,32 +29,35 @@ RSpec.describe Qiwi::Kassa::Api do
   before(:each) { stub_const('Qiwi::Kassa::API_URL', 'https://test.qiwi.com/') }
 
   describe 'bills resources' do
-    before { bill_create_stub(url: Qiwi::Kassa::API_URL, id: bill_id) }
-    before { bill_status_stub(url: Qiwi::Kassa::API_URL, id: bill_id) }
-    before { bill_reject_stub(url: Qiwi::Kassa::API_URL, id: bill_id) }
+    before { bill_create_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id) }
+    before { bill_status_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id) }
+    before { bill_payments_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id) }
 
     it '#create' do
-      response = api_client.resources.bills.create(id: bill_id, params: bill_params)
+      response = api_client.resources.bills.create(id: bill_id, site_id: site_id, params: bill_params)
 
       expect(response['billId']).to eq(bill_id)
       expect(response['amount']['value']).to eq(bill_params[:amount][:value])
-      expect(response['status']['value']).to eq('WAITING')
+      expect(response['status']['value']).to eq('CREATED')
+      expect(response).to have_key('payUrl')
     end
 
     it '#status' do
-      response = api_client.resources.bills.status(id: bill_id)
+      response = api_client.resources.bills.status(id: bill_id, site_id: site_id)
 
       expect(response['billId']).to eq(bill_id)
       expect(response['amount']['value']).to eq(bill_params[:amount][:value])
-      expect(response).to have_key('status')
+      expect(response['status']['value']).to eq('PAID')
+      expect(response).to have_key('payUrl')
+      expect(response['payments'][0]['amount']['value']).to eq(bill_params[:amount][:value])
     end
 
-    it '#reject' do
-      response = api_client.resources.bills.reject(id: bill_id)
+    it '#payments' do
+      response = api_client.resources.bills.payments(id: bill_id, site_id: site_id)
 
-      expect(response['billId']).to eq(bill_id)
-      expect(response['amount']['value']).to eq(bill_params[:amount][:value])
-      expect(response['status']['value']).to eq('REJECTED')
+      expect(response[0]['billId']).to eq(bill_id)
+      expect(response[0]['amount']['value']).to eq(bill_params[:amount][:value])
+      expect(response[0]['status']['value']).to eq('COMPLETED')
     end
   end
 

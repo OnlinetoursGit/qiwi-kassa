@@ -1,0 +1,43 @@
+[
+  {
+    "paymentId": "bb918d93-a3f6-4c89-b753-c9e2311f1318",
+    "billId": "893794793973",
+    "createdDateTime": "2023-03-22T18:38:24+03:00",
+    "amount": {
+      "currency": "RUB",
+      "value": "3.00"
+    },
+    "capturedAmount": {
+      "currency": "RUB",
+      "value": "0.00"
+    },
+    "refundedAmount": {
+      "currency": "RUB",
+      "value": "0.00"
+    },
+    "paymentMethod": {
+      "type": "CARD",
+      "maskedPan": "453265******8362",
+      "rrn": "123",
+      "authCode": "181218"
+    },
+    "status": {
+      "value": "COMPLETED",
+      "changedDateTime": "2023-03-22T18:38:24+03:00"
+    },
+    "comment": "Text comment",
+    "customFields": {
+      "invoice_creation_type": "PAYIN_API"
+    },
+    "flags": [
+      "TEST"
+    ],
+    "paymentCardInfo": {
+      "issuingCountry": "840",
+      "issuingBank": "MASTERCARD - MDS FOR EUROPE DE",
+      "paymentSystem": "MASTERCARD",
+      "fundingSource": "UNKNOWN",
+      "paymentSystemProduct": "Unknown"
+    }
+  }
+]

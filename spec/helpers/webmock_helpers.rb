@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module QiwiKassaWebMock
-  def bill_create_stub(url:, id:)
-    stub_request(:put, url + "bills/#{id}")
+  def bill_create_stub(url:, id:, site_id:)
+    stub_request(:put, url + "partner/payin/v1/sites/#{site_id}/bills/#{id}")
       .to_return(
         body: File.read('./spec/fixtures/resources/bills/create.json'),
         headers: { 'Content-Type' => 'application/json' },
@@ -10,8 +10,8 @@ module QiwiKassaWebMock
       )
   end
 
-  def bill_status_stub(url:, id:)
-    stub_request(:get, url + "bills/#{id}")
+  def bill_status_stub(url:, id:, site_id:)
+    stub_request(:get, url + "partner/payin/v1/sites/#{site_id}/bills/#{id}/details")
       .to_return(
         body: File.read('./spec/fixtures/resources/bills/status.json'),
         headers: { 'Content-Type' => 'application/json' },
@@ -19,10 +19,10 @@ module QiwiKassaWebMock
       )
   end
 
-  def bill_reject_stub(url:, id:)
-    stub_request(:post, url + "bills/#{id}/reject")
+  def bill_payments_stub(url:, id:, site_id:)
+    stub_request(:get, url + "partner/payin/v1/sites/#{site_id}/bills/#{id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/bills/reject.json'),
+        body: File.read('./spec/fixtures/resources/bills/payments.json'),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
