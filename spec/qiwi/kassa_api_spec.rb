@@ -1,6 +1,7 @@
 RSpec.describe Qiwi::Kassa::Api do
   let!(:site_id) { 'site-id' }
   let!(:bill_id) { '893794793973' }
+  let!(:payment_id) { 'bb918d93-a3f6-4c89-b753-c9e2311f1318' }
   let!(:refund_id) { '899343443' }
   let!(:bill_params) {
     {
@@ -19,7 +20,7 @@ RSpec.describe Qiwi::Kassa::Api do
     {
       amount: {
         currency: 'RUB',
-        value: '1.50'
+        value: '2.00'
       }
     }
   }
@@ -62,26 +63,42 @@ RSpec.describe Qiwi::Kassa::Api do
   end
 
   describe 'refunds resources' do
-    before { refund_create_stub(url: Qiwi::Kassa::API_URL, bill_id: bill_id, refund_id: refund_id) }
-    before { refund_status_stub(url: Qiwi::Kassa::API_URL, bill_id: bill_id, refund_id: refund_id) }
+    before do
+      refund_create_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
+      refund_status_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
+      refund_statuses_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id)
+    end
 
     it '#create' do
-      response = api_client.resources.refunds.create(bill_id: bill_id,
+      response = api_client.resources.refunds.create(site_id: site_id,
+                                                     payment_id: payment_id,
                                                      refund_id: refund_id,
-                                                     params: bill_params)
+                                                     params: refund_params)
 
       expect(response['refundId']).to eq(refund_id)
       expect(response['amount']['value']).to eq(refund_params[:amount][:value])
-      expect(response['status']).to eq('PARTIAL')
+      expect(response['status']['value']).to eq('COMPLETED')
+      expect(response['flags']).to include('REVERSAL')
     end
 
     it '#status' do
-      response = api_client.resources.refunds.status(bill_id: bill_id,
+      response = api_client.resources.refunds.status(site_id: site_id,
+                                                     payment_id: payment_id,
                                                      refund_id: refund_id)
 
       expect(response['refundId']).to eq(refund_id)
       expect(response['amount']['value']).to eq(refund_params[:amount][:value])
-      expect(response['status']).to eq('PARTIAL')
+      expect(response['status']['value']).to eq('COMPLETED')
+      expect(response['flags']).to include('REVERSAL')
+    end
+
+    it '#statuses' do
+      response = api_client.resources.refunds.statuses(site_id: site_id, payment_id: payment_id)
+
+      expect(response[0]['refundId']).to eq(refund_id)
+      expect(response[0]['amount']['value']).to eq(refund_params[:amount][:value])
+      expect(response[0]['status']['value']).to eq('COMPLETED')
+      expect(response[0]['flags']).to include('REVERSAL')
     end
   end
 end

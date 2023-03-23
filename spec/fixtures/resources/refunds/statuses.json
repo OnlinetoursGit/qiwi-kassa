@@ -1,0 +1,32 @@
+[
+  {
+    "refundId": "899343443",
+    "createdDateTime": "2023-03-22T16:45:37+03:00",
+    "amount": {
+      "currency": "RUB",
+      "value": "2.00"
+    },
+    "status": {
+      "value": "COMPLETED",
+      "changedDateTime": "2023-03-22T16:45:39+03:00"
+    },
+    "flags": [
+      "REVERSAL"
+    ]
+  },
+  {
+    "refundId": "899343444",
+    "createdDateTime": "2023-03-22T17:04:08+03:00",
+    "amount": {
+      "currency": "RUB",
+      "value": "1.00"
+    },
+    "status": {
+      "value": "COMPLETED",
+      "changedDateTime": "2023-03-22T17:04:10+03:00"
+    },
+    "flags": [
+      "REVERSAL"
+    ]
+  }
+]

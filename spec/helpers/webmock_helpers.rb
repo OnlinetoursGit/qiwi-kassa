@@ -28,8 +28,8 @@ module QiwiKassaWebMock
       )
   end
 
-  def refund_create_stub(url:, bill_id:, refund_id:)
-    stub_request(:put, url + "bills/#{bill_id}/refunds/#{refund_id}")
+  def refund_create_stub(url:, site_id:, payment_id:, refund_id:)
+    stub_request(:put, url + "partner/payin/v1/sites/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
       .to_return(
         body: File.read('./spec/fixtures/resources/refunds/create.json'),
         headers: { 'Content-Type' => 'application/json' },
@@ -37,10 +37,19 @@ module QiwiKassaWebMock
       )
   end
 
-  def refund_status_stub(url:, bill_id:, refund_id:)
-    stub_request(:get, url + "bills/#{bill_id}/refunds/#{refund_id}")
+  def refund_status_stub(url:, site_id:, payment_id:, refund_id:)
+    stub_request(:get, url + "partner/payin/v1/sites/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
       .to_return(
         body: File.read('./spec/fixtures/resources/refunds/status.json'),
+        headers: { 'Content-Type' => 'application/json' },
+        status: 200
+      )
+  end
+
+  def refund_statuses_stub(url:, site_id:, payment_id:)
+    stub_request(:get, url + "partner/payin/v1/sites/#{site_id}/payments/#{payment_id}/refunds")
+      .to_return(
+        body: File.read('./spec/fixtures/resources/refunds/statuses.json'),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
