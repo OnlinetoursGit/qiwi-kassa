@@ -54,4 +54,22 @@ module QiwiKassaWebMock
         status: 200
       )
   end
+
+  def capture_create_stub(url:, site_id:, payment_id:, capture_id:)
+    stub_request(:put, url + "partner/payin/v1/sites/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
+      .to_return(
+        body: File.read('./spec/fixtures/resources/captures/create.json'),
+        headers: { 'Content-Type' => 'application/json' },
+        status: 200
+      )
+  end
+
+  def capture_status_stub(url:, site_id:, payment_id:, capture_id:)
+    stub_request(:get, url + "partner/payin/v1/sites/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
+      .to_return(
+        body: File.read('./spec/fixtures/resources/captures/status.json'),
+        headers: { 'Content-Type' => 'application/json' },
+        status: 200
+      )
+  end
 end

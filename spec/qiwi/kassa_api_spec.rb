@@ -101,4 +101,29 @@ RSpec.describe Qiwi::Kassa::Api do
       expect(response[0]['flags']).to include('REVERSAL')
     end
   end
+
+  describe 'captures resources' do
+    let!(:capture_id) { 'capture-id' }
+
+    before do
+      capture_create_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+      capture_status_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+    end
+
+    it '#create' do
+      response = api_client.resources.captures.create(site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+
+      expect(response['captureId']).to eq(capture_id)
+      expect(response['amount']['value']).to eq(bill_params[:amount][:value])
+      expect(response['status']['value']).to eq('COMPLETED')
+    end
+
+    it '#status' do
+      response = api_client.resources.captures.status(site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+
+      expect(response['captureId']).to eq(capture_id)
+      expect(response['amount']['value']).to eq(bill_params[:amount][:value])
+      expect(response['status']['value']).to eq('COMPLETED')
+    end
+  end
 end
