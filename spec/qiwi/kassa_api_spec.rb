@@ -1,8 +1,6 @@
 RSpec.describe Qiwi::Kassa::Api do
   let!(:site_id) { 'site-id' }
-  let!(:bill_id) { '893794793973' }
   let!(:payment_id) { 'bb918d93-a3f6-4c89-b753-c9e2311f1318' }
-  let!(:refund_id) { '899343443' }
   let!(:bill_params) {
     {
       amount: {
@@ -15,24 +13,18 @@ RSpec.describe Qiwi::Kassa::Api do
       customFields: {}
     }
   }
-
-  let!(:refund_params) {
-    {
-      amount: {
-        currency: 'RUB',
-        value: '2.00'
-      }
-    }
-  }
-
   let!(:api_client) { described_class.new(secret_key: 'skey') }
 
   before(:each) { stub_const('Qiwi::Kassa::API_URL', 'https://test.qiwi.com/') }
 
   describe 'bills resources' do
-    before { bill_create_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id) }
-    before { bill_status_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id) }
-    before { bill_payments_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id) }
+    let!(:bill_id) { '893794793973' }
+
+    before do
+      bill_create_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id)
+      bill_status_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id)
+      bill_payments_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id)
+    end
 
     it '#create' do
       response = api_client.resources.bills.create(id: bill_id, site_id: site_id, params: bill_params)
@@ -63,6 +55,16 @@ RSpec.describe Qiwi::Kassa::Api do
   end
 
   describe 'refunds resources' do
+    let!(:refund_id) { '899343443' }
+    let!(:refund_params) {
+      {
+        amount: {
+          currency: 'RUB',
+          value: '2.00'
+        }
+      }
+    }
+
     before do
       refund_create_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
       refund_status_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
