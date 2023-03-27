@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 RSpec.describe Qiwi::Kassa::Api do
   let!(:site_id) { 'site-id' }
   let!(:payment_id) { 'bb918d93-a3f6-4c89-b753-c9e2311f1318' }
   let!(:amount_value) { '3.00' }
-  let!(:bill_params) {
+  let!(:bill_params) do
     {
       amount: {
         currency: 'RUB',
@@ -13,7 +15,7 @@ RSpec.describe Qiwi::Kassa::Api do
       customer: {},
       customFields: {}
     }
-  }
+  end
   let!(:api_client) { described_class.new(secret_key: 'skey') }
 
   before(:each) { stub_const('Qiwi::Kassa::API_URL', 'https://test.qiwi.com/') }
@@ -64,7 +66,7 @@ RSpec.describe Qiwi::Kassa::Api do
 
         expect(response['errorCode']).to eq('validation.error')
         expect(response['description']).to eq('Validation error')
-        expect(response['cause']['amount']).to eq(["Invalid money format. Should have 2 fraction digits"])
+        expect(response['cause']['amount']).to eq(['Invalid money format. Should have 2 fraction digits'])
         expect(response).to_not have_key('payUrl')
       end
     end
@@ -72,14 +74,14 @@ RSpec.describe Qiwi::Kassa::Api do
 
   describe 'refunds resources' do
     let!(:refund_id) { '899343443' }
-    let!(:refund_params) {
+    let!(:refund_params) do
       {
         amount: {
           currency: 'RUB',
           value: '2.00'
         }
       }
-    }
+    end
 
     before do
       refund_create_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
@@ -120,14 +122,14 @@ RSpec.describe Qiwi::Kassa::Api do
     end
 
     context 'errors' do
-      let!(:refund_params) {
+      let!(:refund_params) do
         {
           amount: {
             # currency: 'RUB',
             value: '2.00'
           }
         }
-      }
+      end
 
       before do
         refund_create_bad_request_error_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id,
@@ -177,12 +179,13 @@ RSpec.describe Qiwi::Kassa::Api do
       end
 
       it '#create responses with error' do
-        response = api_client.resources.captures.create(site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+        response = api_client.resources.captures.create(site_id: site_id, payment_id: payment_id,
+                                                        capture_id: capture_id)
 
         expect(response['errorCode']).to eq('payin.incorrect-method-invocation')
         expect(response['userMessage']).to eq('Cannot perform this operation')
         expect(response['description']).to eq('Capture already done for this payment')
       end
-   end
+    end
   end
 end
