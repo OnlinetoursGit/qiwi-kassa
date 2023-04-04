@@ -11,8 +11,8 @@ module Qiwi
       SUPPORTED_NOTIFICATION_TYPES = %w[PAYMENT CAPTURE REFUND]
 
       def initialize(data:)
-        unless SUPPORTED_NOTIFICATION_TYPES.include?(data['type'])
-          raise UnsupportedTypeError, "Unsupported notification type: #{data['type']}."
+        unless SUPPORTED_NOTIFICATION_TYPES.include?(data[:type])
+          raise UnsupportedTypeError, "Unsupported notification type: #{data[:type]}."
         end
 
         define_instances serialized_data(data)
