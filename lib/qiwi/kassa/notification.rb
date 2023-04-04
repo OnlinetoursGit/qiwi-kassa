@@ -4,7 +4,7 @@ module Qiwi
   module Kassa
     # Qiwi::Kassa::Notification
     class Notification
-      class NotificationException < StandardError; end
+      class UnsupportedTypeError < StandardError; end
 
       VALUE_SEPARATOR = '|'
       DEFAULT_ALGORITHM = 'sha256'
@@ -12,7 +12,7 @@ module Qiwi
 
       def initialize(data:)
         unless SUPPORTED_NOTIFICATION_TYPES.include?(data['type'])
-          raise NotificationException, "Unsupported notification type: #{data['type']}."
+          raise UnsupportedTypeError, "Unsupported notification type: #{data['type']}."
         end
 
         define_instances serialized_data(data)
