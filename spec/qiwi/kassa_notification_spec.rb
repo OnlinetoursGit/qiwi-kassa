@@ -73,9 +73,9 @@ RSpec.describe Qiwi::Kassa::Notification do
         version: "1" }
     end
 
-    it 'raises NotificationException' do
+    it 'raises UnsupportedTypeError' do
       expect { subject }
-        .to raise_error(described_class::NotificationException, 'Unsupported notification type: CHECK_CARD.')
+        .to raise_error(described_class::UnsupportedTypeError, 'Unsupported notification type: CHECK_CARD.')
     end
   end
 end
