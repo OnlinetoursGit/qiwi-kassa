@@ -2,30 +2,18 @@
 
 RSpec.describe Qiwi::Kassa::Notification do
   let!(:data) do
-    { 'payment' =>
-      { 'paymentId' => '4226144',
-        'type' => 'PAYMENT',
-        'createdDateTime' => '2019-10-02T18:10:12+03:00',
-        'status' => {
-          'value' => 'SUCCESS', 'changedDateTime' => '2019-10-02T18:10:13+03:00'
-        },
-        'amount' => { 'value' => 2.0, 'currency' => 'RUB' },
-        'paymentMethod' => {
-          'type' => 'CARD',
-          'maskedPan' => '427630******6080',
-          'rrn' => nil,
-          'authCode' => nil
-        },
-        'customer' => {
-          'ip' => '46.158.132.222',
-          'email' => 'test@test.com',
-          'phone' => '0'
-        },
-        'gatewayData' => { 'type' => 'ACQUIRING', 'authCode' => '181218' },
-        'billId' => '9829394:982939419',
-        'flags' => [] },
-      'type' => 'PAYMENT',
-      'version' => '1' }
+    { payment: { paymentId: "4226144",
+                 type: "PAYMENT",
+                 createdDateTime: "2019-10-02T18:10:12+03:00",
+                 status: { value: "SUCCESS", changedDateTime: "2019-10-02T18:10:13+03:00" },
+                 amount: { value: 2.0, currency: "RUB" },
+                 paymentMethod: { type: "CARD", maskedPan: "427630******6080", rrn: nil, authCode: nil },
+                 customer: { ip: "46.158.132.222", email: "test@test.com", phone: "0" },
+                 gatewayData: { type: "ACQUIRING", authCode: "181218" },
+                 billId: "9829394:982939419",
+                 flags: [] },
+      type: "PAYMENT",
+      version: "1" }
   end
 
   let!(:signature) do
@@ -53,21 +41,18 @@ RSpec.describe Qiwi::Kassa::Notification do
 
   context 'error response' do
     let!(:data) do
-      { 'payment' =>
-          { 'paymentId' => '4226144',
-            'type' => 'PAYMENT',
-            'createdDateTime' => '2019-10-02T18:10:12+03:00',
-            'status' => {
-              'value' => 'DECLINED',
-              'changedDateTime' => '2019-10-02T18:10:13+03:00',
-              'reasonCode' => 'reason code',
-              'reasonMessage' => 'reason message',
-              'errorCode' => 'error code'
-            },
-            'amount' => { 'value' => 2.0, 'currency' => 'RUB' },
-            'flags' => [] },
-        'type' => 'PAYMENT',
-        'version' => '1' }
+      { payment: { paymentId: "4226144",
+                   type: "PAYMENT",
+                   createdDateTime: "2019-10-02T18:10:12+03:00",
+                   status: { value: "DECLINED",
+                             changedDateTime: "2019-10-02T18:10:13+03:00",
+                             reasonCode: "reason code",
+                             reasonMessage: "reason message",
+                             errorCode: "error code" },
+                   amount: { value: 2.0, currency: "RUB" },
+                   flags: [] },
+        type: "PAYMENT",
+        version: "1" }
     end
 
     it '#success?' do
@@ -83,11 +68,9 @@ RSpec.describe Qiwi::Kassa::Notification do
 
   context 'unsupported notification type' do
     let!(:data) do
-      { 'checkCard' =>
-          { 'type' => 'CHECK_CARD',
-            'flags' => [] },
-        'type' => 'CHECK_CARD',
-        'version' => '1' }
+      { checkCard: { type: "CHECK_CARD", flags: [] },
+        type: "CHECK_CARD",
+        version: "1" }
     end
 
     it 'raises NotificationException' do
