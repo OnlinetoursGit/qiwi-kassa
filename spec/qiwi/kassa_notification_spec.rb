@@ -17,7 +17,7 @@ RSpec.describe Qiwi::Kassa::Notification do
   end
 
   let!(:signature) do
-    'c890a9de4bde27292cfe83131aea10432ea68bd9205ef75a37edc419f9746159'
+    '0572c2153b1b57b1eddb9124ca6b8868e57eb3dce29220417922f18e7788285c'
   end
 
   let!(:skey) { 'skey' }
