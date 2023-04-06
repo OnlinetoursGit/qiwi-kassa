@@ -5,9 +5,9 @@ module Qiwi
     # Qiwi::Kassa::Capture
     class Capture < Resource
       # https://developer.qiwi.com/ru/payments/#capture
-      def create(site_id:, payment_id:, capture_id:)
+      def create(site_id:, payment_id:, capture_id:, params: {})
         @client.put(endpoint: "partner/payin/v1/sites/#{site_id}/payments/#{payment_id}/captures/#{capture_id}",
-                    payload: '{}')
+                    payload: JSON.fast_generate(params))
       end
 
       # https://developer.qiwi.com/ru/payments/#capture_get
