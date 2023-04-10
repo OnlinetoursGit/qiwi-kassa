@@ -80,6 +80,20 @@ notification = Qiwi::Kassa::Notification.new(data: notification_params)
 notification.valid?(secret_key: notification_secret_key, signature: request.headers["Signature"])
 ```
 
+### Build WPF invoice url ([doc](https://developer.qiwi.com/ru/payments/#https-qiwi-form))
+
+```ruby
+params = {
+           publicKey: 'Fnzr1yTebUiQaBLDnebLMMxL8nc6FF5zfmGQnypc*******',
+           amount: 100,
+           billId: '893794793973',
+           successUrl: 'https://test.ru',
+           email: 'test@test.ru'
+         }
+
+Qiwi::Kassa::PaymentForm.build(params: params)
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
