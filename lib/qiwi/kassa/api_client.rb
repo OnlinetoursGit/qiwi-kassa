@@ -34,9 +34,7 @@ module Qiwi
 
       def make_request
         response = yield
-        raise StandardError.new("Unauthorized request") if response.status == 401
-        response_body = JSON.parse(response.body)
-        response_body
+        JSON.parse(response.body)
       rescue => e
         raise ApiException, "Message: #{e.message}"
       end
@@ -44,9 +42,7 @@ module Qiwi
       def with_retries(retries_count = 5, timeout = 5)
         retries_count -= 1
         response = yield
-        raise StandardError.new("Unauthorized request") if response.status == 401
-        response_body = JSON.parse(response.body)
-        response_body
+        JSON.parse(response.body)
       rescue => e
         raise ApiException, "Message: #{e.message}. Number of connection tries exceed." unless retries_count > 0
         sleep(timeout)
