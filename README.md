@@ -24,58 +24,58 @@ Or install it yourself as:
 
 ### Interact with API
 
-####Initialize `api` object:
+#### Initialize `api` object:
 ```ruby
 api = Qiwi::Kassa::Api.new(secret_key: "xxx-yyy-zzz")
 ```
-####Create invoice ([api doc](https://developer.qiwi.com/ru/payments/#invoice_put)):
+#### Create invoice ([api doc](https://developer.qiwi.com/ru/payments/#invoice_put)):
 ```ruby
 api.resources.bills.create(id: "invoice_id", site_id: "site_id", params: { amount: { currency: "RUB", value: "10.00" }, expirationDateTime: "2024-04-29T14:12:45+03:00" })
 ```
 
-####Invoice status ([api doc](https://developer.qiwi.com/ru/payments/#invoice-details)):
+#### Invoice status ([api doc](https://developer.qiwi.com/ru/payments/#invoice-details)):
 ```ruby
 api.resources.bills.status(id: "invoice_id", site_id: "site_id")
 ```
 
-####Invoice payments ([api doc](https://developer.qiwi.com/ru/payments/#invoice-payments)):
+#### Invoice payments ([api doc](https://developer.qiwi.com/ru/payments/#invoice-payments)):
 ```ruby
 api.resources.bills.payments(id: "invoice_id", site_id: "site_id")
 ```
 
-####Capture create ([api doc](https://developer.qiwi.com/ru/payments/#capture)):
+#### Capture create ([api doc](https://developer.qiwi.com/ru/payments/#capture)):
 ```ruby
 api.resources.captures.create(payment_id: "payment_id", capture_id: "capture_id", site_id: "site_id")
 ```
 
-####Capture status ([api doc](https://developer.qiwi.com/ru/payments/#capture_get)):
+#### Capture status ([api doc](https://developer.qiwi.com/ru/payments/#capture_get)):
 ```ruby
 api.resources.captures.status(payment_id: "payment_id", capture_id: "capture_id", site_id: "site_id")
 ```
 
-####Refund create ([api doc](https://developer.qiwi.com/ru/payments/#refund-api)):
+#### Refund create ([api doc](https://developer.qiwi.com/ru/payments/#refund-api)):
 ```ruby
 api.resources.refunds.create(payment_id: "payment_id", refund_id: "refund_id", site_id: "site_id")
 ```
 
-####Refund status ([api doc](https://developer.qiwi.com/ru/payments/#refund-api-status)):
+#### Refund status ([api doc](https://developer.qiwi.com/ru/payments/#refund-api-status)):
 ```ruby
 api.resources.refunds.status(payment_id: "payment_id", refund_id: "refund_id", site_id: "site_id")
 ```
 
-####Refunds statuses ([api doc](https://developer.qiwi.com/ru/payments/#refunds-api-status)):
+#### Refunds statuses ([api doc](https://developer.qiwi.com/ru/payments/#refunds-api-status)):
 ```ruby
 api.resources.refunds.statuses(payment_id: "payment_id", site_id: "site_id")
 ```
 
 ### Server notification ([api doc](https://developer.qiwi.com/ru/payments/#callback))
 
-####Build notification inside your callback controller:
+#### Build notification inside your callback controller:
 ```ruby
 notification = Qiwi::Kassa::Notification.new(data: notification_params)
 ```
 
-####Check is notification valid:
+#### Check is notification valid:
 ```ruby
 notification.valid?(secret_key: notification_secret_key, signature: request.headers["Signature"])
 ```
