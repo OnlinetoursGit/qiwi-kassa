@@ -4,17 +4,20 @@ module Qiwi
   module Kassa
     # Qiwi::Kassa::Bill
     class Bill < Resource
-      def create(id:, params: {})
-        @client.put(endpoint: "partner/bill/v1/bills/#{id}",
+      # https://developer.qiwi.com/ru/payments/#invoice_put
+      def create(id:, site_id:, params: {})
+        @client.put(endpoint: "partner/payin/v1/sites/#{site_id}/bills/#{id}",
                     payload: JSON.fast_generate(params))
       end
 
-      def status(id:)
-        @client.get(endpoint: "partner/bill/v1/bills/#{id}")
+      # https://developer.qiwi.com/ru/payments/#invoice-details
+      def status(id:, site_id:)
+        @client.get(endpoint: "partner/payin/v1/sites/#{site_id}/bills/#{id}/details")
       end
 
-      def reject(id:)
-        @client.post(endpoint: "partner/bill/v1/bills/#{id}/reject")
+      # https://developer.qiwi.com/ru/payments/#invoice-payments
+      def payments(id:, site_id:)
+        @client.get(endpoint: "partner/payin/v1/sites/#{site_id}/bills/#{id}")
       end
     end
   end

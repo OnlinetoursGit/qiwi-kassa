@@ -1,0 +1,12 @@
+{
+  "captureId": "capture-id",
+  "createdDateTime": "2023-03-22T13:33:41+03:00",
+  "amount": {
+    "currency": "RUB",
+    "value": "3.00"
+  },
+  "status": {
+    "value": "COMPLETED",
+    "changedDateTime": "2023-03-22T13:33:43+03:00"
+  }
+}

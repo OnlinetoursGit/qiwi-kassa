@@ -1,0 +1,13 @@
+{
+  "serviceName": "payin-core",
+  "errorCode": "validation.error",
+  "description": "Validation error",
+  "userMessage": "Validation error",
+  "dateTime": "2023-03-21T18:16:58.342746+03:00",
+  "traceId": "97c89e6fb2bdd2e9",
+  "cause": {
+    "amount": [
+      "Invalid money format. Should have 2 fraction digits"
+    ]
+  }
+}

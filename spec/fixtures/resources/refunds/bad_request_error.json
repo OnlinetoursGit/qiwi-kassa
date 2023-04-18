@@ -1,0 +1,8 @@
+{
+  "serviceName": "payin-core",
+  "errorCode": "http.message.conversion.failed",
+  "description": "Bad request",
+  "userMessage": "Bad request",
+  "dateTime": "2023-03-22T16:44:03.953017+03:00",
+  "traceId": "7c26dcb064eef198"
+}

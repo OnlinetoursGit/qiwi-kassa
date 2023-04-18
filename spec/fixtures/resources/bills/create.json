@@ -1,16 +1,15 @@
 {
-  "siteId": "23044",
   "billId": "893794793973",
+  "invoiceUid": "c2286a4f-4ff2-4836-971e-b6afce51a049",
   "amount": {
-    "value": 100,
-    "currency": "RUB"
+    "currency": "RUB",
+    "value": "3.00"
   },
+  "expirationDateTime": "2023-03-29T14:12:45+03:00",
   "status": {
-    "value": "WAITING",
-    "changedDateTime": "2018-03-05T11:27:41+03:00"
+    "value": "CREATED",
+    "changedDateTime": "2023-03-22T18:23:53+03:00"
   },
   "comment": "Text comment",
-  "creationDateTime": "2018-03-05T11:27:41",
-  "expirationDateTime": "2018-04-13T14:30:00+03:00",
-  "payUrl": "https://oplata.qiwi.com/form/?invoice_uid=d875277b-6f0f-445d-8a83-f62c7c07be77"
+  "payUrl": "https://oplata.qiwi.com/form?invoiceUid=c2286a4f-4ff2-4836-971e-b6afce51a049"
 }

@@ -4,31 +4,30 @@ module Qiwi
   module Kassa
     # Qiwi::Kassa::Notification
     class Notification
+      class UnsupportedTypeError < StandardError; end
+
       VALUE_SEPARATOR = '|'
       DEFAULT_ALGORITHM = 'sha256'
+      SUPPORTED_NOTIFICATION_TYPES = %w[PAYMENT CAPTURE REFUND]
 
       def initialize(data:)
+        unless SUPPORTED_NOTIFICATION_TYPES.include?(data[:type])
+          raise UnsupportedTypeError, "Unsupported notification type: #{data[:type]}."
+        end
+
         define_instances serialized_data(data)
       end
 
       def success?
-        status['value'] != 'DECLINE'
+        status['value'] == 'SUCCESS'
       end
 
       def valid?(secret_key:, signature:)
         signature == hmac(secret_key)
       end
 
-      def bill?
-        !(payment_id || capture_id || refund_id)
-      end
-
-      def operation_id
-        bill_id
-      end
-
       def to_h
-        Hash[instance_variables.map { |name| [name.to_s.delete("@"), instance_variable_get(name)] } ]
+        Hash[instance_variables.map { |name| [name.to_s.delete('@'), instance_variable_get(name)] }]
       end
 
       def error
@@ -49,24 +48,10 @@ module Qiwi
       end
 
       def invoice_params
-        return bill_invoice_params if bill?
-
         [
           payment_id || capture_id || refund_id,
           created_date_time,
           format('%.2f', amount['value'])
-        ].map(&:to_s).join(VALUE_SEPARATOR)
-      end
-
-      # todo: use factory pattern
-      def bill_invoice_params
-        [
-          amount['currency'],
-          amount['value'],
-          bill_id,
-          site_id,
-          status['value']
-
         ].map(&:to_s).join(VALUE_SEPARATOR)
       end
 
@@ -75,7 +60,7 @@ module Qiwi
       end
 
       def define_instances(data)
-        type = data['type']&.downcase || 'bill'
+        type = data['type']&.downcase
 
         data[type].each do |k, v|
           instance_variable_set("@#{k}", v)
