@@ -22,6 +22,10 @@ module Qiwi
         status['value'] == 'SUCCESS'
       end
 
+      def waiting?
+        status['value'] == 'WAITING'
+      end
+
       def valid?(secret_key:, signature:)
         signature == hmac(secret_key)
       end
