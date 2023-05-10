@@ -15,7 +15,8 @@ module Qiwi
   module Kassa
     class ApiException < StandardError; end
 
-    API_URL = 'https://api.qiwi.com/'
+    # API_URL = 'https://api.qiwi.com/'
+    API_URL = 'https://api.pay2me.com/payin/v1/sites/test_qiwi/'
 
     # Qiwi::Kassa::Api
     class Api
