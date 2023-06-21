@@ -18,7 +18,7 @@ RSpec.describe Qiwi::Kassa::Api do
   end
   let!(:api_client) { described_class.new(secret_key: 'skey') }
   let!(:provider) { :qiwi }
-  let!(:api_host) { Qiwi::Kassa::API_HOSTS[provider] }
+  let(:api_host) { Qiwi::Kassa::API_HOSTS[provider] }
 
   before(:each) do
     stub_const('Qiwi::Kassa::API_HOSTS',
