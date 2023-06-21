@@ -17,16 +17,22 @@ RSpec.describe Qiwi::Kassa::Api do
     }
   end
   let!(:api_client) { described_class.new(secret_key: 'skey') }
+  let!(:provider) { :qiwi }
+  let!(:api_host) { Qiwi::Kassa::API_HOSTS[provider] }
 
-  before(:each) { stub_const('Qiwi::Kassa::API_URL', 'https://test.qiwi.com/') }
+  before(:each) do
+    stub_const('Qiwi::Kassa::API_HOSTS',
+               { qiwi: 'https://test.qiwi.com',
+                 pay2me: 'https://test.pay2me.com' })
+  end
 
   describe 'bills resources' do
     let!(:bill_id) { '893794793973' }
 
     before do
-      bill_create_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id)
-      bill_status_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id)
-      bill_payments_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id)
+      bill_create_stub(host: api_host, id: bill_id, site_id: site_id)
+      bill_status_stub(host: api_host, id: bill_id, site_id: site_id)
+      bill_payments_stub(host: api_host, id: bill_id, site_id: site_id)
     end
 
     it '#create' do
@@ -59,7 +65,7 @@ RSpec.describe Qiwi::Kassa::Api do
     context 'errors' do
       let!(:amount_value) { 3.0 }
 
-      before { bill_create_with_validation_error_stub(url: Qiwi::Kassa::API_URL, id: bill_id, site_id: site_id) }
+      before { bill_create_with_validation_error_stub(host: api_host, id: bill_id, site_id: site_id) }
 
       it '#create responses with error' do
         response = api_client.resources.bills.create(id: bill_id, site_id: site_id, params: bill_params)
@@ -84,9 +90,9 @@ RSpec.describe Qiwi::Kassa::Api do
     end
 
     before do
-      refund_create_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
-      refund_status_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
-      refund_statuses_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id)
+      refund_create_stub(host: api_host, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
+      refund_status_stub(host: api_host, site_id: site_id, payment_id: payment_id, refund_id: refund_id)
+      refund_statuses_stub(host: api_host, site_id: site_id, payment_id: payment_id)
     end
 
     it '#create' do
@@ -132,7 +138,7 @@ RSpec.describe Qiwi::Kassa::Api do
       end
 
       before do
-        refund_create_bad_request_error_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id,
+        refund_create_bad_request_error_stub(host: api_host, site_id: site_id, payment_id: payment_id,
                                              refund_id: refund_id)
       end
 
@@ -152,8 +158,8 @@ RSpec.describe Qiwi::Kassa::Api do
     let!(:capture_id) { 'capture-id' }
 
     before do
-      capture_create_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, capture_id: capture_id)
-      capture_status_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+      capture_create_stub(host: api_host, site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+      capture_status_stub(host: api_host, site_id: site_id, payment_id: payment_id, capture_id: capture_id)
     end
 
     it '#create' do
@@ -174,7 +180,7 @@ RSpec.describe Qiwi::Kassa::Api do
 
     context 'errors' do
       before do
-        capture_create_repeated_error_stub(url: Qiwi::Kassa::API_URL, site_id: site_id, payment_id: payment_id,
+        capture_create_repeated_error_stub(host: api_host, site_id: site_id, payment_id: payment_id,
                                            capture_id: capture_id)
       end
 
