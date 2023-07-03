@@ -18,8 +18,6 @@ RSpec.describe Qiwi::Kassa::Api do
   end
   let!(:api_client) { described_class.new(secret_key: 'skey') }
   let!(:provider) { :qiwi }
-  let(:api_host) { Qiwi::Kassa::API_HOSTS[provider] }
-  let(:api_basic_path) { Qiwi::Kassa::Resource::BASIC_PATHS[provider] }
 
   before(:each) do
     stub_const('Qiwi::Kassa::API_HOSTS', { qiwi: 'https://test.qiwi.com' })
@@ -30,9 +28,9 @@ RSpec.describe Qiwi::Kassa::Api do
     let!(:bill_id) { '893794793973' }
 
     before do
-      bill_create_stub(host: api_host, basic_path: api_basic_path,  id: bill_id, site_id: site_id)
-      bill_status_stub(host: api_host, basic_path: api_basic_path,  id: bill_id, site_id: site_id)
-      bill_payments_stub(host: api_host, basic_path: api_basic_path,  id: bill_id, site_id: site_id)
+      bill_create_stub(provider: provider, id: bill_id, site_id: site_id)
+      bill_status_stub(provider: provider, id: bill_id, site_id: site_id)
+      bill_payments_stub(provider: provider, id: bill_id, site_id: site_id)
     end
 
     it '#create' do
@@ -66,10 +64,7 @@ RSpec.describe Qiwi::Kassa::Api do
       let!(:amount_value) { 3.0 }
 
       before do
-        bill_create_with_validation_error_stub(host: api_host,
-                                               basic_path: api_basic_path,
-                                               id: bill_id,
-                                               site_id: site_id)
+        bill_create_with_validation_error_stub(provider: provider, id: bill_id, site_id: site_id)
       end
       it '#create responses with error' do
         response = api_client.resources.bills.create(id: bill_id, site_id: site_id, params: bill_params)
@@ -94,17 +89,15 @@ RSpec.describe Qiwi::Kassa::Api do
     end
 
     before do
-      refund_create_stub(host: api_host,
-                         basic_path: api_basic_path,
+      refund_create_stub(provider: provider,
                          site_id: site_id,
                          payment_id: payment_id,
                          refund_id: refund_id)
-      refund_status_stub(host: api_host,
-                         basic_path: api_basic_path,
+      refund_status_stub(provider: provider,
                          site_id: site_id,
                          payment_id: payment_id,
                          refund_id: refund_id)
-      refund_statuses_stub(host: api_host, basic_path: api_basic_path,  site_id: site_id, payment_id: payment_id)
+      refund_statuses_stub(provider: provider, site_id: site_id, payment_id: payment_id)
     end
 
     it '#create' do
@@ -150,8 +143,7 @@ RSpec.describe Qiwi::Kassa::Api do
       end
 
       before do
-        refund_create_bad_request_error_stub(host: api_host,
-                                             basic_path: api_basic_path,
+        refund_create_bad_request_error_stub(provider: provider,
                                              site_id: site_id,
                                              payment_id: payment_id,
                                              refund_id: refund_id)
@@ -173,13 +165,11 @@ RSpec.describe Qiwi::Kassa::Api do
     let!(:capture_id) { 'capture-id' }
 
     before do
-      capture_create_stub(host: api_host,
-                          basic_path: api_basic_path,
+      capture_create_stub(provider: provider,
                           site_id: site_id,
                           payment_id: payment_id,
                           capture_id: capture_id)
-      capture_status_stub(host: api_host,
-                          basic_path: api_basic_path,
+      capture_status_stub(provider: provider,
                           site_id: site_id,
                           payment_id: payment_id,
                           capture_id: capture_id)
@@ -203,8 +193,7 @@ RSpec.describe Qiwi::Kassa::Api do
 
     context 'errors' do
       before do
-        capture_create_repeated_error_stub(host: api_host,
-                                           basic_path: api_basic_path,
+        capture_create_repeated_error_stub(provider: provider,
                                            site_id: site_id,
                                            payment_id: payment_id,
                                            capture_id: capture_id)

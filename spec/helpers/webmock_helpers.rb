@@ -1,103 +1,127 @@
 # frozen_string_literal: true
 
 module QiwiKassaWebMock
-  def bill_create_stub(host:, basic_path:, id:, site_id:)
-    stub_request(:put, "#{host}/#{basic_path}/#{site_id}/bills/#{id}")
+  FIXTURE_BASIC_PATHS = {
+    qiwi: "spec/fixtures/qiwi/resources",
+    pay2me: "spec/fixtures/pay2me/resources"
+  }.freeze
+
+  def bill_create_stub(provider:, id:, site_id:)
+    stub_request(:put, "#{host(provider)}/#{basic_path(provider)}/#{site_id}/bills/#{id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/bills/create.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/bills/create.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-
-  def bill_create_with_validation_error_stub(host:, basic_path:, id:, site_id:)
-    stub_request(:put, "#{host}/#{basic_path}/#{site_id}/bills/#{id}")
+  def bill_create_with_validation_error_stub(provider:, id:, site_id:)
+    stub_request(:put, "#{host(provider)}/#{basic_path(provider)}/#{site_id}/bills/#{id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/bills/create_validation_error.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/bills/create_validation_error.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def bill_status_stub(host:, basic_path:, id:, site_id:)
-    stub_request(:get, "#{host}/#{basic_path}/#{site_id}/bills/#{id}/details")
+  def bill_status_stub(provider:, id:, site_id:)
+    stub_request(:get, "#{host(provider)}/#{basic_path(provider)}/#{site_id}/bills/#{id}/details")
       .to_return(
-        body: File.read('./spec/fixtures/resources/bills/status.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/bills/status.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def bill_payments_stub(host:, basic_path:, id:, site_id:)
-    stub_request(:get, "#{host}/#{basic_path}/#{site_id}/bills/#{id}")
+  def bill_payments_stub(provider:, id:, site_id:)
+    stub_request(:get, "#{host(provider)}/#{basic_path(provider)}/#{site_id}/bills/#{id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/bills/payments.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/bills/payments.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def refund_create_stub(host:, basic_path:, site_id:, payment_id:, refund_id:)
-    stub_request(:put, "#{host}/#{basic_path}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
+  def refund_create_stub(provider:, site_id:, payment_id:, refund_id:)
+    stub_request(:put,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/refunds/create.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/refunds/create.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def refund_create_bad_request_error_stub(host:, basic_path:, site_id:, payment_id:, refund_id:)
-    stub_request(:put, "#{host}/#{basic_path}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
+  def refund_create_bad_request_error_stub(provider:, site_id:, payment_id:, refund_id:)
+    stub_request(:put,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/refunds/bad_request_error.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/refunds/bad_request_error.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def refund_status_stub(host:, basic_path:, site_id:, payment_id:, refund_id:)
-    stub_request(:get, "#{host}/#{basic_path}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
+  def refund_status_stub(provider:, site_id:, payment_id:, refund_id:)
+    stub_request(:get,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/refunds/status.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/refunds/status.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def refund_statuses_stub(host:, basic_path:, site_id:, payment_id:)
-    stub_request(:get, "#{host}/#{basic_path}/#{site_id}/payments/#{payment_id}/refunds")
+  def refund_statuses_stub(provider:, site_id:, payment_id:)
+    stub_request(:get, "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/refunds")
       .to_return(
-        body: File.read('./spec/fixtures/resources/refunds/statuses.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/refunds/statuses.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def capture_create_stub(host:, basic_path:, site_id:, payment_id:, capture_id:)
-    stub_request(:put, "#{host}/#{basic_path}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
+  def capture_create_stub(provider:, site_id:, payment_id:, capture_id:)
+    stub_request(:put,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/captures/create.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/captures/create.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def capture_create_repeated_error_stub(host:, basic_path:, site_id:, payment_id:, capture_id:)
-    stub_request(:put, "#{host}/#{basic_path}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
+  def capture_create_repeated_error_stub(provider:, site_id:, payment_id:, capture_id:)
+    stub_request(:put,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/captures/repeated_capture_attemption_error.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/captures/repeated_capture_attemption_error.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
   end
 
-  def capture_status_stub(host:, basic_path:, site_id:, payment_id:, capture_id:)
-    stub_request(:get, "#{host}/#{basic_path}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
+  def capture_status_stub(provider:, site_id:, payment_id:, capture_id:)
+    stub_request(:get,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
       .to_return(
-        body: File.read('./spec/fixtures/resources/captures/status.json'),
+        body: File.read("./#{fixtures_basic_path(provider)}/captures/status.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )
+  end
+
+  private
+
+  def host(provider)
+    Qiwi::Kassa::API_HOSTS[provider]
+  end
+
+  def basic_path(provider)
+    Qiwi::Kassa::Resource::BASIC_PATHS[provider]
+  end
+
+  def fixtures_basic_path(provider)
+    FIXTURE_BASIC_PATHS[provider]
   end
 end
