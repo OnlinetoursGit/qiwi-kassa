@@ -1,0 +1,12 @@
+{
+  "paymentMethod": {
+    "type": "CARD",
+    "maskedPan": "426803******5792",
+    "rrn": "318591252065",
+    "authCode": "297713"
+  },
+  "status": {
+    "value": "COMPLETED",
+    "changedDateTime": "2023-07-04T10:07:18.683+03:00"
+  }
+}

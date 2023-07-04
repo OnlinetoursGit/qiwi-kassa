@@ -1,0 +1,23 @@
+{
+  "refundId": "123456",
+  "createdDateTime": "2023-07-04T10:33:44.427+03:00",
+  "amount": {
+    "currency": "RUB",
+    "value": 10
+  },
+  "capturedAmount": {
+    "currency": "RUB",
+    "value": 0
+  },
+  "refundedAmount": {
+    "currency": "RUB",
+    "value": 10
+  },
+  "status": {
+    "value": "COMPLETED",
+    "changedDateTime": "2023-07-04T10:33:45.113+03:00"
+  },
+  "flags": [
+    "REVERSAL"
+  ]
+}

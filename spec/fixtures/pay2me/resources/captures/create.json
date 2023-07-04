@@ -1,0 +1,20 @@
+{
+  "captureId": "123456",
+  "createdDateTime": "2023-07-04T10:17:53.800+03:00",
+  "amount": {
+    "currency": "RUB",
+    "value": 10
+  },
+  "capturedAmount": {
+    "currency": "RUB",
+    "value": 10
+  },
+  "refundedAmount": {
+    "currency": "RUB",
+    "value": 0
+  },
+  "status": {
+    "value": "COMPLETED",
+    "changedDateTime": "2023-07-04T10:17:54.339+03:00"
+  }
+}
