@@ -62,6 +62,17 @@ module QiwiKassaWebMock
       )
   end
 
+  def refund_create_validation_error_stub(provider:, site_id:, payment_id:, refund_id:, params:)
+    stub_request(:put,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
+      .with(body: params)
+      .to_return(
+        body: File.read("./#{fixtures_basic_path(provider)}/refunds/create_validation_error.json"),
+        headers: { 'Content-Type' => 'application/json' },
+        status: 200
+      )
+  end
+
   def refund_status_stub(provider:, site_id:, payment_id:, refund_id:)
     stub_request(:get,
                  "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/refunds/#{refund_id}")
@@ -86,6 +97,17 @@ module QiwiKassaWebMock
                  "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
       .to_return(
         body: File.read("./#{fixtures_basic_path(provider)}/captures/create.json"),
+        headers: { 'Content-Type' => 'application/json' },
+        status: 200
+      )
+  end
+
+  def capture_create_validation_error_stub(provider:, site_id:, payment_id:, capture_id:, params:)
+    stub_request(:put,
+                 "#{host(provider)}/#{basic_path(provider)}/#{site_id}/payments/#{payment_id}/captures/#{capture_id}")
+      .with(body: params)
+      .to_return(
+        body: File.read("./#{fixtures_basic_path(provider)}/captures/create_validation_error.json"),
         headers: { 'Content-Type' => 'application/json' },
         status: 200
       )

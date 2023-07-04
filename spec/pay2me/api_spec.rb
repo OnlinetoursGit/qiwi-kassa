@@ -3,7 +3,7 @@
 RSpec.describe Qiwi::Kassa::Api do
   let!(:site_id) { 'site-id' }
   let!(:payment_id) { 'bb918d93-a3f6-4c89-b753-c9e2311f1318' }
-  let!(:amount_value) { '10.00' }
+  let!(:amount_value) { 10 }
   let!(:bill_params) do
     {
       amount: {
@@ -47,7 +47,7 @@ RSpec.describe Qiwi::Kassa::Api do
     end
 
     context 'errors' do
-      let!(:amount_value) { 3.0 }
+      let!(:amount_value) { 'test' }
 
       before do
         bill_create_with_validation_error_stub(provider: provider, id: bill_id, site_id: site_id)
@@ -58,6 +58,116 @@ RSpec.describe Qiwi::Kassa::Api do
         expect(response['errorCode']).to eq(101003)
         expect(response['userMessage']).to eq('Internal error')
         expect(response['description']).to eq('INPUT DATA ERROR | `amount` request param value is incorrect')
+      end
+    end
+  end
+
+  describe 'captures resources' do
+    let!(:capture_id) { '123456' }
+
+    before do
+      capture_create_stub(provider: provider, site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+    end
+
+    it '#create', :aggregate_failures do
+      response = api_client.resources.captures.create(site_id: site_id, payment_id: payment_id, capture_id: capture_id)
+
+      expect(response['captureId']).to eq(capture_id)
+      expect(response['amount']['value']).to eq(bill_params[:amount][:value])
+      expect(response['capturedAmount']['value']).to eq(bill_params[:amount][:value])
+      expect(response['refundedAmount']['value']).to be_zero
+      expect(response['status']['value']).to eq('COMPLETED')
+    end
+
+    context 'errors' do
+      let!(:amount_value) { 'test' }
+      let!(:capture_params) do
+        {
+          amount: {
+            currency: 'RUB',
+            value: amount_value
+          }
+        }
+      end
+
+      before do
+        capture_create_validation_error_stub(provider: provider,
+                                             site_id: site_id,
+                                             payment_id: payment_id,
+                                             capture_id: capture_id,
+                                             params: capture_params)
+      end
+
+      it '#create responses with error' do
+        response = api_client.resources.captures.create(site_id: site_id, payment_id: payment_id,
+                                                        capture_id: capture_id, params: capture_params)
+
+        expect(response['errorCode']).to eq(101003)
+        expect(response['userMessage']).to eq('Internal error')
+        expect(response['description']).to eq('INPUT DATA ERROR | service_stream_psp.route_stream | `amount` request param value is incorrect')
+      end
+    end
+  end
+
+  describe 'refunds resources' do
+    let!(:refund_id) { '123456' }
+    let!(:refund_params) do
+      {
+        amount: {
+          currency: 'RUB',
+          value: 10
+        }
+      }
+    end
+
+    before do
+      refund_create_stub(provider: provider,
+                         site_id: site_id,
+                         payment_id: payment_id,
+                         refund_id: refund_id)
+    end
+
+    it '#create', :aggregate_failures do
+      response = api_client.resources.refunds.create(site_id: site_id,
+                                                     payment_id: payment_id,
+                                                     refund_id: refund_id,
+                                                     params: refund_params)
+
+      expect(response['refundId']).to eq(refund_id)
+      expect(response['amount']['value']).to eq(refund_params[:amount][:value])
+      expect(response['capturedAmount']['value']).to be_zero
+      expect(response['refundedAmount']['value']).to eq(refund_params[:amount][:value])
+      expect(response['status']['value']).to eq('COMPLETED')
+      expect(response['flags']).to include('REVERSAL')
+    end
+
+    context 'errors' do
+      let!(:refund_params) do
+        {
+          amount: {
+            currency: 'RUB',
+            value: 20
+          }
+        }
+      end
+
+      before do
+        refund_create_validation_error_stub(provider: provider,
+                                            site_id: site_id,
+                                            payment_id: payment_id,
+                                            refund_id: refund_id,
+                                            params: refund_params)
+      end
+
+      it '#create responses with error', :aggregate_failures do
+        response = api_client.resources.refunds.create(site_id: site_id,
+                                                       payment_id: payment_id,
+                                                       refund_id: refund_id,
+                                                       params: refund_params)
+
+        expect(response['errorCode']).to eq(101003)
+        expect(response['userMessage']).to eq('Internal error')
+        expect(response['description']).to eq('INPUT DATA ERROR | service_stream_psp.route_stream | `amount` request param value is incorrect')
       end
     end
   end
