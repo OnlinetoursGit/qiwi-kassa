@@ -36,7 +36,7 @@ module Qiwi
       def make_request
         response = yield
         JSON.parse(response.body)
-      rescue => e
+      rescue StandardError => e
         raise ApiException, "Message: #{e.message}"
       end
 
@@ -44,8 +44,9 @@ module Qiwi
         retries_count -= 1
         response = yield
         JSON.parse(response.body)
-      rescue => e
-        raise ApiException, "Message: #{e.message}. Number of connection tries exceed." unless retries_count > 0
+      rescue StandardError => e
+        raise ApiException, "Message: #{e.message}. Number of connection tries exceed." unless retries_count.positive?
+
         sleep(timeout)
         retry
       end
