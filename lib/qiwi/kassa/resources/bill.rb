@@ -6,18 +6,18 @@ module Qiwi
     class Bill < Resource
       # https://developer.qiwi.com/ru/payments/#invoice_put
       def create(id:, site_id:, params: {})
-        @client.put(endpoint: "partner/payin/v1/sites/#{site_id}/bills/#{id}",
+        @client.put(endpoint: "#{basic_path}/#{site_id}/bills/#{id}",
                     payload: JSON.fast_generate(params))
       end
 
       # https://developer.qiwi.com/ru/payments/#invoice-details
       def status(id:, site_id:)
-        @client.get(endpoint: "partner/payin/v1/sites/#{site_id}/bills/#{id}/details")
+        @client.get(endpoint: "#{basic_path}/#{site_id}/bills/#{id}/details")
       end
 
       # https://developer.qiwi.com/ru/payments/#invoice-payments
       def payments(id:, site_id:)
-        @client.get(endpoint: "partner/payin/v1/sites/#{site_id}/bills/#{id}")
+        @client.get(endpoint: "#{basic_path}/#{site_id}/bills/#{id}")
       end
     end
   end

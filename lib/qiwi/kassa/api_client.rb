@@ -4,29 +4,30 @@ module Qiwi
   module Kassa
     # Qiwi::Kassa::ApiClient
     class ApiClient
-      def initialize(secret_key:)
+      def initialize(secret_key:, provider:)
         @default_headers = {
           'Content-Type': 'application/json;charset=UTF-8',
           Accept: 'application/json',
           Authorization: "Bearer #{secret_key}"
         }
+        @provider = provider
       end
 
-      def get(url: API_URL, endpoint:, custom_headers: {})
+      def get(endpoint:, host: API_HOSTS[@provider], custom_headers: {})
         make_request do
-          Faraday.get("#{url}#{endpoint}", {}, @default_headers.merge(custom_headers))
+          Faraday.get("#{host}/#{endpoint}", {}, @default_headers.merge(custom_headers))
         end
       end
 
-      def post(url: API_URL, endpoint:, payload: nil, custom_headers: {})
+      def post(endpoint:, host: API_HOSTS[@provider], payload: nil, custom_headers: {})
         make_request do
-          Faraday.post("#{url}#{endpoint}", payload, @default_headers.merge(custom_headers))
+          Faraday.post("#{host}/#{endpoint}", payload, @default_headers.merge(custom_headers))
         end
       end
 
-      def put(url: API_URL, endpoint:, payload: nil, custom_headers: {})
+      def put(endpoint:, host: API_HOSTS[@provider], payload: nil, custom_headers: {})
         make_request do
-          Faraday.put("#{url}#{endpoint}", payload, @default_headers.merge(custom_headers))
+          Faraday.put("#{host}/#{endpoint}", payload, @default_headers.merge(custom_headers))
         end
       end
 
@@ -35,7 +36,7 @@ module Qiwi
       def make_request
         response = yield
         JSON.parse(response.body)
-      rescue => e
+      rescue StandardError => e
         raise ApiException, "Message: #{e.message}"
       end
 
@@ -43,8 +44,9 @@ module Qiwi
         retries_count -= 1
         response = yield
         JSON.parse(response.body)
-      rescue => e
-        raise ApiException, "Message: #{e.message}. Number of connection tries exceed." unless retries_count > 0
+      rescue StandardError => e
+        raise ApiException, "Message: #{e.message}. Number of connection tries exceed." unless retries_count.positive?
+
         sleep(timeout)
         retry
       end

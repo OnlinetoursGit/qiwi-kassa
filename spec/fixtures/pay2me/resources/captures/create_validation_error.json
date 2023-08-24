@@ -1,0 +1,7 @@
+{
+  "serviceName": "payin-core",
+  "errorCode": 101003,
+  "userMessage": "Internal error",
+  "description": "INPUT DATA ERROR | service_stream_psp.route_stream | `amount` request param value is incorrect",
+  "dateTime": "2023-07-04T10:16:40.891+03:00"
+}

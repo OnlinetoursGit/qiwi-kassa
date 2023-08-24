@@ -1,0 +1,7 @@
+{
+  "serviceName": "payin-core",
+  "errorCode": 101003,
+  "userMessage": "Internal error",
+  "description": "INPUT DATA ERROR | `amount` request param value is incorrect",
+  "dateTime": "2023-07-04T10:05:10.967+03:00"
+}

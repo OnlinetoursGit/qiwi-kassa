@@ -15,18 +15,21 @@ module Qiwi
   module Kassa
     class ApiException < StandardError; end
 
-    API_URL = 'https://api.qiwi.com/'
+    API_HOSTS = {
+      qiwi: 'https://api.qiwi.com',
+      pay2me: 'https://api.pay2me.com'
+    }.freeze
 
     # Qiwi::Kassa::Api
     class Api
       attr_reader :client, :resources
 
-      def initialize(secret_key:)
-        @client = Qiwi::Kassa::ApiClient.new(secret_key: secret_key)
+      def initialize(secret_key:, provider: :qiwi)
+        @client = Qiwi::Kassa::ApiClient.new(secret_key: secret_key, provider: provider)
         @resources = OpenStruct.new(
-          bills: Qiwi::Kassa::Bill.new(client: @client),
-          refunds: Qiwi::Kassa::Refund.new(client: @client),
-          captures: Qiwi::Kassa::Capture.new(client: @client)
+          bills: Qiwi::Kassa::Bill.new(client: @client, provider: provider),
+          refunds: Qiwi::Kassa::Refund.new(client: @client, provider: provider),
+          captures: Qiwi::Kassa::Capture.new(client: @client, provider: provider)
         )
       end
     end
