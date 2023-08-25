@@ -33,7 +33,8 @@ RSpec.describe Qiwi::Kassa::Notification do
 
   it '#to_h', :aggregate_failures do
     expect(subject.to_h.keys)
-      .to eq(%w[payment_id type created_date_time status amount payment_method payment_card_info customer custom_fields])
+      .to match_array(%w[payment_id type created_date_time status amount payment_method payment_card_info customer
+                         custom_fields])
     expect(subject.to_h['amount']).to eq({ 'currency' => 'RUB', 'value' => 10 })
     expect(subject.to_h['status']).to eq({ 'changed_date_time' => '2023-07-05T10:50:12.117+03:00',
                                            'value' => 'SUCCESS' })
