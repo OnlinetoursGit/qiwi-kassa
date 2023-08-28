@@ -54,7 +54,10 @@ RSpec.describe Qiwi::Kassa::Notification do
                    type: 'PAYMENT',
                    createdDateTime: '2023-07-05T10:49:36.681+03:00',
                    status: { value: 'DECLINED',
-                             changedDateTime: '2023-07-05T10:50:12.117+03:00' },
+                             changedDateTime: '2023-07-05T10:50:12.117+03:00',
+                             errorCode: 0,
+                             reasonCode: 'ACQUIRING_INVALID_CARD',
+                             reasonMessage: 'No such card' },
                    amount: { value: 10, currency: 'RUB' } },
         type: 'PAYMENT',
         version: '1' }
@@ -65,10 +68,10 @@ RSpec.describe Qiwi::Kassa::Notification do
     end
 
     # TODO: Включить после добавления необходимых полей на стороне Pay2me
-    xit '#error' do
-      expect(subject.error).to eq({ error_code: 'error code',
-                                    reason_code: 'reason code',
-                                    reason_message: 'reason message' })
+    it '#error' do
+      expect(subject.error).to eq({ error_code: 0,
+                                    reason_code: 'ACQUIRING_INVALID_CARD',
+                                    reason_message: 'No such card' })
     end
   end
 
