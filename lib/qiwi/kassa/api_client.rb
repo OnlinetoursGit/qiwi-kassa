@@ -4,6 +4,8 @@ module Qiwi
   module Kassa
     # Qiwi::Kassa::ApiClient
     class ApiClient
+      TIMEOUT = 70
+
       def initialize(secret_key:, provider:)
         @default_headers = {
           'Content-Type': 'application/json;charset=UTF-8',
@@ -11,27 +13,34 @@ module Qiwi
           Authorization: "Bearer #{secret_key}"
         }
         @provider = provider
+        @host = API_HOSTS[@provider]
       end
 
-      def get(endpoint:, host: API_HOSTS[@provider], custom_headers: {})
+      def get(endpoint:, custom_headers: {})
         make_request do
-          Faraday.get("#{host}/#{endpoint}", {}, @default_headers.merge(custom_headers))
+          connection.get(endpoint, {}, @default_headers.merge(custom_headers))
         end
       end
 
-      def post(endpoint:, host: API_HOSTS[@provider], payload: nil, custom_headers: {})
+      def post(endpoint:, payload: nil, custom_headers: {})
         make_request do
-          Faraday.post("#{host}/#{endpoint}", payload, @default_headers.merge(custom_headers))
+          connection.post(endpoint, payload, @default_headers.merge(custom_headers))
         end
       end
 
-      def put(endpoint:, host: API_HOSTS[@provider], payload: nil, custom_headers: {})
+      def put(endpoint:, payload: nil, custom_headers: {})
         make_request do
-          Faraday.put("#{host}/#{endpoint}", payload, @default_headers.merge(custom_headers))
+          connection.put(endpoint, payload, @default_headers.merge(custom_headers))
         end
       end
 
       private
+
+      def connection
+        @connection ||= Faraday::Connection.new(@host) do |c|
+          c.options.timeout = TIMEOUT
+        end
+      end
 
       def make_request
         response = yield
