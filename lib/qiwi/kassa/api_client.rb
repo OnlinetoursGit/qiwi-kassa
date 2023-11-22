@@ -12,8 +12,7 @@ module Qiwi
           Accept: 'application/json',
           Authorization: "Bearer #{secret_key}"
         }
-        @provider = provider
-        @host = API_HOSTS[@provider]
+        @host = API_HOSTS[provider]
       end
 
       def get(endpoint:, custom_headers: {})

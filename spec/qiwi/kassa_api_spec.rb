@@ -16,12 +16,11 @@ RSpec.describe Qiwi::Kassa::Api do
       customFields: {}
     }
   end
-  let!(:api_client) { described_class.new(secret_key: 'skey') }
+  let(:api_client) { described_class.new(secret_key: 'skey') }
   let!(:provider) { :qiwi }
 
-  before(:each) do
+  before do
     stub_const('Qiwi::Kassa::API_HOSTS', { qiwi: 'https://test.qiwi.com' })
-    stub_const('Qiwi::Kassa::Resource::BASIC_PATHS', { qiwi: 'partner/payin/v1/sites' })
   end
 
   describe 'bills resources' do
