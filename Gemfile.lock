@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    qiwi-kassa (0.3.0)
+    qiwi-kassa (0.3.1)
       faraday
 
 GEM
@@ -56,4 +56,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.0.1
+   2.4.19

@@ -5,8 +5,8 @@ module Qiwi
     # Qiwi::Kassa::Resource
     class Resource
       BASIC_PATHS = {
-        qiwi: 'partner/payin/v1/sites',
-        pay2me: 'payin/v1/sites'
+        qiwi: '/partner/payin/v1/sites',
+        pay2me: '/payin/v1/sites'
       }.freeze
 
       def initialize(client:, provider:)
