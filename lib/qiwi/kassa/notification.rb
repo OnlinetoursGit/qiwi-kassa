@@ -53,7 +53,7 @@ module Qiwi
 
       def invoice_params
         [
-          payment_id || capture_id || refund_id,
+          capture_id || refund_id || payment_id,
           created_date_time,
           format('%.2f', amount['value'])
         ].map(&:to_s).join(VALUE_SEPARATOR)
