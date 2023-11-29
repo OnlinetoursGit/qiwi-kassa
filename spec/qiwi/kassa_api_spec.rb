@@ -204,7 +204,7 @@ RSpec.describe Qiwi::Kassa::Api do
 
         expect(response['errorCode']).to eq('payin.incorrect-method-invocation')
         expect(response['userMessage']).to eq('Cannot perform this operation')
-        expect(response['description']).to eq('Capture already done for this payment')
+        expect(response['description']).to eq('Successful capture already done for this payment')
       end
     end
   end

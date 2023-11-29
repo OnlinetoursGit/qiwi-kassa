@@ -2,7 +2,7 @@
   "serviceName": "payin-core",
   "errorCode": "payin.incorrect-method-invocation",
   "userMessage": "Cannot perform this operation",
-  "description": "Capture already done for this payment",
+  "description": "Successful capture already done for this payment",
   "traceId": "aec7f9bc0064f363",
-  "dateTime": "2023-03-24T13:18:55.100126+03:00"
+  "dateTime": "2023-11-24T13:18:55.100126+03:00"
 }
