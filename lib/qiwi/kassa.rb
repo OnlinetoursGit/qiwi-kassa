@@ -17,7 +17,7 @@ module Qiwi
 
     API_HOSTS = {
       qiwi: 'https://api.qiwi.com',
-      pay2me: 'https://api.pay2me.com'
+      pay2me: 'https://dev1.pay2me.com'
     }.freeze
 
     # Qiwi::Kassa::Api
