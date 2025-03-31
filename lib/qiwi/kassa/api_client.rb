@@ -6,13 +6,13 @@ module Qiwi
     class ApiClient
       TIMEOUT = 70
 
-      def initialize(secret_key:, provider:)
+      def initialize(secret_key:, provider:, host:)
         @default_headers = {
           'Content-Type': 'application/json;charset=UTF-8',
           Accept: 'application/json',
           Authorization: "Bearer #{secret_key}"
         }
-        @host = API_HOSTS[provider]
+        @host = host || API_HOSTS[provider]
       end
 
       def get(endpoint:, custom_headers: {})
