@@ -24,8 +24,8 @@ module Qiwi
     class Api
       attr_reader :client, :resources
 
-      def initialize(secret_key:, provider: :qiwi)
-        @client = Qiwi::Kassa::ApiClient.new(secret_key: secret_key, provider: provider)
+      def initialize(secret_key:, provider: :qiwi, host: API_HOSTS[provider])
+        @client = Qiwi::Kassa::ApiClient.new(secret_key: secret_key, provider: provider, host: host)
         @resources = OpenStruct.new(
           bills: Qiwi::Kassa::Bill.new(client: @client, provider: provider),
           refunds: Qiwi::Kassa::Refund.new(client: @client, provider: provider),
