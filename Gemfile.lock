@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    qiwi-kassa (0.3.2)
+    qiwi-kassa (0.3.3)
       faraday
 
 GEM
@@ -9,11 +9,13 @@ GEM
   specs:
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    base64 (0.2.0)
     coderay (1.1.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.3)
-    faraday (2.7.10)
+    faraday (2.8.1)
+      base64
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)

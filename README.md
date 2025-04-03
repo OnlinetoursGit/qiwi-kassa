@@ -29,6 +29,15 @@ Or install it yourself as:
 api = Qiwi::Kassa::Api.new(secret_key: "xxx-yyy-zzz", provider: :pay2me)
 ```
 Valid values for the `provider` parameter - `qiwi` | `pay2me`. The default value is `qiwi`.
+
+Optional param `host`
+```ruby
+api = Qiwi::Kassa::Api.new(secret_key: "xxx-yyy-zzz", provider: :pay2me, host: "https://alternative.api.host")
+```
+In case `host` does not passed default hosts used:
+ - 'https://api.qiwi.com' for `qiwi`,
+ - 'https://api.pay2me.com' for `pay2me`.
+
 #### Create invoice ([api doc](https://developer.qiwi.com/ru/payments/#invoice_put)):
 ```ruby
 api.resources.bills.create(id: "invoice_id", site_id: "site_id", params: { amount: { currency: "RUB", value: "10.00" }, expirationDateTime: "2024-04-29T14:12:45+03:00" })
