@@ -31,9 +31,13 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'faraday'
 
-  spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'bundler', '>= 2.5.16'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'ostruct'
+  spec.add_development_dependency 'logger'
+  spec.add_development_dependency 'rexml'
+  spec.add_development_dependency 'bigdecimal'
   spec.add_development_dependency 'webmock'
   spec.add_development_dependency 'pry'
 end
