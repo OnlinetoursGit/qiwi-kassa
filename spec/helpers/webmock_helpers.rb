@@ -34,7 +34,7 @@ module QiwiKassaWebMock
   end
 
   def bill_payments_stub(provider:, id:, site_id:)
-    stub_request(:get, "#{base_url(provider)}/#{site_id}/bills/#{id}")
+    stub_request(:get, "#{base_url(provider)}/#{site_id}/payments/#{id}")
       .to_return(
         body: File.read("./#{fixtures_basic_path(provider)}/bills/payments.json"),
         headers: { 'Content-Type' => 'application/json' },

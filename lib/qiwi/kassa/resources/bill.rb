@@ -11,13 +11,16 @@ module Qiwi
       end
 
       # https://developer.qiwi.com/ru/payments/#invoice-details
+      # Не реализовано у нашего провайдера
       def status(id:, site_id:)
         @client.get(endpoint: "#{basic_path}/#{site_id}/bills/#{id}/details")
       end
 
       # https://developer.qiwi.com/ru/payments/#invoice-payments
+      # Реализовано у нашего провайдера не по доке: в path вместо `bills` сделан `payments`.
+      # Т.к. по протоколу киви работает только наш провайдер, то заменяем.
       def payments(id:, site_id:)
-        @client.get(endpoint: "#{basic_path}/#{site_id}/bills/#{id}")
+        @client.get(endpoint: "#{basic_path}/#{site_id}/payments/#{id}")
       end
     end
   end
