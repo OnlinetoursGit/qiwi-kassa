@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    qiwi-kassa (0.3.4)
+    qiwi-kassa (0.3.5)
       faraday
 
 GEM
